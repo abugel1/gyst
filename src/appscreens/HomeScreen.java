@@ -1,4 +1,5 @@
 package appscreens;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -6,10 +7,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class HomeScreen {
+public class HomeScreen extends Application{
+
+	Stage homeScreenStage = new Stage();
 	
 	//Containers
 	BorderPane mainContainer = new BorderPane();
@@ -30,19 +36,22 @@ public class HomeScreen {
 	//Buttons
 	private Button btnStart = new Button("Start Collecting!");
 	private Button btnGoToCollection = new Button("View/Organize Collection!");
-	private Button btnExit = new Button("Exit");	//Will change to red color later
-	//private Button btnCreateNewItem = new Button("Create New Object!");		will be added after collection screen is created
+	private Button btnExit = new Button("Exit");
+	//private Button btnCreateNewItem = new Button("Create New Item!");		will be added after collection screen is created
 
 	
-	//Methods
+	//Constructor
 	public HomeScreen() {
 		addObjectsToContainers();
 		setPadding();
-		//activateButtons();
+		makeButtonsPretty();
+		makeTextPretty();
+		activateButtons();
 		exitAppListener();
 		showApp();
 	}
-
+	
+	//Methods
 	private void addObjectsToContainers() {
 		//Add everything to separate containers 
 		titleHolder.getChildren().add(title);
@@ -50,26 +59,58 @@ public class HomeScreen {
 		startButtonOrCreateNewItemObject.getChildren().add(btnStart);
 		goToCollectionButtonObject.getChildren().add(btnGoToCollection);
 		exitButtonObject.getChildren().add(btnExit);
+		
 		//Add everything but exit button to one container
 		everythingButExit.getChildren().addAll(titleHolder,taglineHolder,startButtonOrCreateNewItemObject,goToCollectionButtonObject); //Will add createNewItemButtonItem
 		
 		//Add everything to mainContainer
-		
 		mainContainer.setCenter(everythingButExit);
 		mainContainer.setTop(exitButtonObject);
 	}
 	
 	private void setPadding() {
-		exitButtonObject.setPadding(new Insets(0, 20, 50, 100));	//top,right,bottom,left
+		exitButtonObject.setPadding(new Insets(20, -50, 0, 850));	//top,right,bottom,left
 		titleHolder.setPadding(new Insets(0, 50, 10, 50));
 		
 	}
 	
-	/* private void activateButtons() {
-		// Will use for buttons to go to other screens
+	private void makeButtonsPretty() {
+		//Make Start button and Create Item Buttons Pretty
+			//btnStart.setStyle(null);
 		
-	} */
+		//Make Exit Button Pretty
+		btnExit.setStyle("-fx-background-color: #FF0000;-fx-text-fill: #000000;-fx-font-size: 25;");
+			// -fx-border-color: #000000; -fx-border-width: 2px;
+	}
+
+	private void makeTextPretty() {
+		title.setFont(Font.font("noto sans",FontWeight.BOLD,FontPosture.REGULAR,50));
+		
+	}
 	
+	private void activateButtons() {
+		// For buttons to go to other screens
+			startCollectingButtonListener();
+			//goToCollectionButtonListener();
+	}
+	
+	private void startCollectingButtonListener() {
+		btnStart.setOnAction(e -> {
+			goToSelectItemTypeScreen();
+		});
+		
+	}
+
+	private void goToSelectItemTypeScreen() {
+		start(null);
+		homeScreenStage.close();
+	}
+
+	@Override
+	public void start(Stage stage) {
+		new SelectItemType();
+	}
+
 	/*private void disableUnnecessaryButtons(){
 		//Will use to disable Start button after first press -- Will change to createNewItemButtonItem
 		
@@ -87,11 +128,10 @@ public class HomeScreen {
 		Platform.exit();
 	}
 
-	private void showApp() {		
-		Stage stage = new Stage();
-		Scene scene = new Scene(mainContainer,1000,750);	//first #: length, second #: height
-		stage.setTitle("GYST");
-		stage.setScene(scene);
-		stage.show();	
+	protected void showApp() {		
+		Scene homeScreenScene = new Scene(mainContainer,950,750);	//first #: length, second #: height
+		homeScreenStage.setTitle("GYST");
+		homeScreenStage.setScene(homeScreenScene);
+		homeScreenStage.show();	
 	}
 }

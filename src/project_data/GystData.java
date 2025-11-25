@@ -21,7 +21,7 @@ public class GystData {
 		//Establish a connection 
 				try {
 					connection = DriverManager.getConnection
-							("jdbc:mysql://localhost:3306/mydb", "root", "root");
+							("jdbc:mysql://localhost:3306/gyst", "root", "root");
 					System.out.println("Database connected!");
 				} catch (SQLException ex) {
 					ex.printStackTrace();
@@ -33,6 +33,21 @@ public class GystData {
 				} catch (SQLException ex) {
 					ex.printStackTrace();
 				}
+				
+	}
+	
+	//Method to insert data into General Items table in database
+	public void insertIntoItems(String name, String location, int year) {
+		String mySQLInsertStatement = "INSERT INTO item (location, year_item_gotten, name) VALUES ('"+location+"',"+year+",'"+name+"')";
+		System.out.println(mySQLInsertStatement);
+		
+		try {
+			statement.executeUpdate(mySQLInsertStatement);
+			System.out.println("Insert successful!");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void close() {

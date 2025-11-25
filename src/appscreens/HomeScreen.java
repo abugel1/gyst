@@ -1,4 +1,5 @@
 package appscreens;
+import buttons.ExitButton;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -12,6 +13,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import screentools.MainTitle;
 
 public class HomeScreen extends Application{
 
@@ -20,23 +22,21 @@ public class HomeScreen extends Application{
 	//Containers
 	BorderPane mainContainer = new BorderPane();
 	
-	HBox titleHolder = new HBox();
 	HBox taglineHolder = new HBox();
 	HBox startButtonOrCreateNewItemObject = new HBox();
 	HBox goToCollectionButtonObject = new HBox();
-	HBox exitButtonObject = new HBox();
 	
 	VBox everythingButExit = new VBox();
 	
 	
 	//Text
-	Text title = new Text("G.Y.S.T");
+	MainTitle title = new MainTitle("G.Y.S.T");
 	Text tagline = new Text("Get Your Stuff Together!");
 	
 	//Buttons
-	private Button btnStart = new Button("Start Collecting!");
+	private Button btnStart = new Button("Create New Item!");		//Originally stated "Start collecting!" and was supposed to switch to create new item after first button press. Cut due to time constraint and buttons correlated into one "Create New Item!" Button
 	private Button btnGoToCollection = new Button("View/Organize Collection!");
-	private Button btnExit = new Button("Exit");
+	private ExitButton btnExit = new ExitButton(homeScreenStage);
 	//private Button btnCreateNewItem = new Button("Create New Item!");		will be added after collection screen is created
 
 	
@@ -45,32 +45,28 @@ public class HomeScreen extends Application{
 		addObjectsToContainers();
 		setPadding();
 		makeButtonsPretty();
-		makeTextPretty();
 		activateButtons();
-		exitAppListener();
 		showApp();
 	}
 	
 	//Methods
 	private void addObjectsToContainers() {
 		//Add everything to separate containers 
-		titleHolder.getChildren().add(title);
 		taglineHolder.getChildren().add(tagline);
 		startButtonOrCreateNewItemObject.getChildren().add(btnStart);
 		goToCollectionButtonObject.getChildren().add(btnGoToCollection);
-		exitButtonObject.getChildren().add(btnExit);
 		
 		//Add everything but exit button to one container
-		everythingButExit.getChildren().addAll(titleHolder,taglineHolder,startButtonOrCreateNewItemObject,goToCollectionButtonObject); //Will add createNewItemButtonItem
+		everythingButExit.getChildren().addAll(title,taglineHolder,startButtonOrCreateNewItemObject,goToCollectionButtonObject); //Will add createNewItemButtonItem
 		
 		//Add everything to mainContainer
 		mainContainer.setCenter(everythingButExit);
-		mainContainer.setTop(exitButtonObject);
+		mainContainer.setTop(btnExit);
 	}
 	
 	private void setPadding() {
-		exitButtonObject.setPadding(new Insets(20, -50, 0, 850));	//top,right,bottom,left
-		titleHolder.setPadding(new Insets(0, 50, 10, 50));
+		btnExit.setPadding(new Insets(20, -50, 0, 850));	//top,right,bottom,left
+		title.setPadding(new Insets(0, 50, 10, 50));
 		
 	}
 	
@@ -78,14 +74,10 @@ public class HomeScreen extends Application{
 		//Make Start button and Create Item Buttons Pretty
 			//btnStart.setStyle(null);
 		
-		//Make Exit Button Pretty
+		/* Will be styled in ExitButton
+		 * //Make Exit Button Pretty
 		btnExit.setStyle("-fx-background-color: #FF0000;-fx-text-fill: #000000;-fx-font-size: 25;");
-			// -fx-border-color: #000000; -fx-border-width: 2px;
-	}
-
-	private void makeTextPretty() {
-		title.setFont(Font.font("noto sans",FontWeight.BOLD,FontPosture.REGULAR,50));
-		
+			// -fx-border-color: #000000; -fx-border-width: 2px; */
 	}
 	
 	private void activateButtons() {
@@ -102,7 +94,7 @@ public class HomeScreen extends Application{
 	}
 
 	private void goToSelectItemTypeScreen() {
-		start(null);
+		start(homeScreenStage);
 		homeScreenStage.close();
 	}
 
@@ -111,22 +103,13 @@ public class HomeScreen extends Application{
 		new SelectItemType();
 	}
 
-	/*private void disableUnnecessaryButtons(){
-		//Will use to disable Start button after first press -- Will change to createNewItemButtonItem
+	//Will cut out for time saving
+		/*private void disableUnnecessaryButtons(){
+			//Will use to disable Start button after first press -- Will change to createNewItemButtonItem
 		
-		startButtonOrCreateNewItemObject.getChildren().remove(btnStart);
-		startButtonOrCreateNewItemObject.getChildren().add(btnCreateNewItem);
-		} */
-	
-	private void exitAppListener() {
-		btnExit.setOnAction(e -> {
-			exitApp();
-		});
-	}
-	
-	private void exitApp() {
-		Platform.exit();
-	}
+			startButtonOrCreateNewItemObject.getChildren().remove(btnStart);
+			startButtonOrCreateNewItemObject.getChildren().add(btnCreateNewItem);
+			} */
 
 	protected void showApp() {		
 		Scene homeScreenScene = new Scene(mainContainer,950,750);	//first #: length, second #: height

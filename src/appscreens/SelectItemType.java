@@ -1,7 +1,7 @@
 package appscreens;
 
+import buttons.ExitButton;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,15 +22,14 @@ public class SelectItemType extends Application{
 	HBox choiceBoxHolder = new HBox();
 	HBox backButtonObject = new HBox();
 	HBox nextScreenButtonObject = new HBox();
-	HBox exitButtonObject = new HBox();
 	HBox titleAndExitHolder = new HBox();
 	
 	//Text
 	Text title = new Text("Please Select Item Type to Create");
 	
 	//Buttons
-	private Button btnExit = new Button("Exit");
-	private Button btnNext = new Button("Next");
+	ExitButton btnExit = new ExitButton(stage);
+	//private Button btnNext = new Button("Next");
 	private Button btnBack = new Button("Back");
 	
 	//ChoiceBox
@@ -40,7 +39,6 @@ public class SelectItemType extends Application{
 	public SelectItemType() {
 		addObjectsToContainers();
 		makeButtonsWork();
-		exitAppListener();
 		showApp();
 	}
 	
@@ -48,14 +46,13 @@ public class SelectItemType extends Application{
 
 	private void addObjectsToContainers() {
 		//Add everything to separate containers
-		exitButtonObject.getChildren().add(btnExit);
-		nextScreenButtonObject.getChildren().add(btnNext);
+		//nextScreenButtonObject.getChildren().add(btnNext);
 		titleHolder.getChildren().add(title);
 		choiceBoxHolder.getChildren().add(options);
 		backButtonObject.getChildren().add(btnBack);
 		
 		//Add title and exit button to one container
-		titleAndExitHolder.getChildren().addAll(titleHolder, exitButtonObject);
+		titleAndExitHolder.getChildren().addAll(titleHolder, btnExit);
 		
 		//Add everything to mainContainer
 		mainScreen.setTop(titleAndExitHolder);		
@@ -87,7 +84,7 @@ public class SelectItemType extends Application{
 		new HomeScreen();		
 	}
 
-	private void exitAppListener() {
+	/* private void exitAppListener() {
 		btnExit.setOnAction(e -> {
 			exitApp();
 		});
@@ -95,7 +92,7 @@ public class SelectItemType extends Application{
 	
 	private void exitApp() {
 		Platform.exit();
-	}
+	} */
 	
 	private void showApp() {
 		Scene scene = new Scene(mainScreen,950,750);	//first #: length, second #: height
